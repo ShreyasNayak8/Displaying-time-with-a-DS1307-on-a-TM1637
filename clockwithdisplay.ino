@@ -23,12 +23,12 @@ void setup() {
 		URTCLIB_WIRE.begin();
 	#endif
 
-	rtc.set(0, 17, 22, 2, 3, 5, 24);
+	rtc.set(0, 17, 8, 2, 3, 5, 24);
 	//  RTCLib::set(byte second, byte minute, byte hour, byte dayOfWeek, byte dayOfMonth, byte month, byte year)
 	
 
 	// Set the display brightness (0= lowest, 7=highest)
-	display.setBrightness(2);
+	display.setBrightness(3);
 	
 
 }
@@ -43,16 +43,14 @@ void loop() {
   Serial.println(rtc.minute());
   
  
-
+ 
 	//Here the TM1637 displays the time according to the one printed by the rtc as above.
   display.showNumberDec(rtc.hour() *100 + rtc.minute(), false); 
-delay(1000);
-  
+  delay(1000);
+ 
+  //This is one below is the same as above, but the one below will help make the colon blink. If you dont want it to blink simply comment it by adding "//" to both the lines
+  display.showNumberDecEx(rtc.hour() *100 + rtc.minute(), 0b11100000, false);
+  delay(700);
 
-  //This is just a simple code for making the colon in the TM1637 blink 
- uint8_t segto;
-  int value = 1244;
-  segto = 0x80 | display.encodeDigit((value / 100)%10);
-  display.setSegments(&segto, 1, 1);
-  delay(800); //You can adjust the interval in which the colon blinks upon your liking
+ 
 }
